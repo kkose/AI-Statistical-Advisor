@@ -55,17 +55,17 @@ stramlit run main.py
 
 ## 🧠 Code Structure
 
-stat-test-advisor/<br>
-├── docs/                      # Raw documentation (for RAG)<br>
-├── langgraph_agent/<br>
-│   ├── graph.py               # LangGraph build logic<br>
-│   ├── nodes.py               # All nodes (classify, clarify, retrieve, respond, code)<br>
-├── rag/<br>
-│   ├── embedder.py            # Chunk + embed docs<br>
-│   ├── retriever.py           # Load and query embedded docs<br>
-├── main.py                    # CLI interface to run the agent<br>
-├── embed.py                   # One-time embed script<br>
-├── requirements.txt<br>
+stat-test-advisor/ <br>
+├── docs/                      *# Raw documentation (for RAG)* <br>
+├── langgraph_agent/ <br>
+│   ├── graph.py               *# LangGraph build logic* <br>
+│   ├── nodes.py               *# All nodes (classify, clarify, retrieve, respond, code)* <br>
+├── rag/ <br>
+│   ├── embedder.py            *# Chunk + embed docs* <br>
+│   ├── retriever.py           *# Load and query embedded docs* <br>
+├── main.py                    *# CLI interface to run the agent* <br>
+├── embed.py                   *# One-time embed script* <br>
+├── requirements.txt <br>
 
 ## 🤖 Agent Logic (LangGraph)
 
