@@ -5,6 +5,7 @@ import streamlit as st
 # Config page
 st.set_page_config(page_title="Stats Advisor Agent",
                    page_icon='🤖',
+                   layout="wide",
                    initial_sidebar_state="expanded")
 
 # Add a place to enter the API key
