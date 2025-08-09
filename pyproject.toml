@@ -6,6 +6,8 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "chromadb>=1.0.16",
+    "graphviz>=0.21",
+    "ipykernel>=6.30.1",
     "langchain-chroma>=0.2.5",
     "langchain-community>=0.3.27",
     "langchain-openai>=0.3.28",

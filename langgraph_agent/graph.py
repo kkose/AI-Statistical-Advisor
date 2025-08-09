@@ -38,3 +38,10 @@ def build_graph():
     builder.add_edge("generate_code", END)
 
     return builder.compile()
+
+
+# Create the graph image and save png
+# from IPython.display import display, Image
+# graph = build_graph()
+# display(Image(graph.get_graph().draw_mermaid_png()))
+

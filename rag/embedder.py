@@ -8,7 +8,7 @@ load_dotenv()
 
 
 # Function to embed documents
-def embed_docs(api_key):
+def embed_docs():
     """
     Embeds the SciPy documentation using OpenAI embeddings and saves
     the result to a ChromaDB at "rag/chroma_db".
