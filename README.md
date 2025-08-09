@@ -89,7 +89,7 @@ graph TD
 
 ### Output:
 
-![](img/Stats_agent.png)
+![](img/Demo.gif)
 
 ## 👨‍🔬 About
 
