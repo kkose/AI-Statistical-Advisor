@@ -11,6 +11,11 @@ This project is an AI agent that helps you choose the most appropriate **statist
 **"Which test should I use?"**  
 Choosing the right statistical test can be confusing. This AI assistant breaks down your question, retrieves documentation if needed, asks clarifying questions, and recommends the correct test — plus generates the code using `scipy.stats`.
 
+## Streamlit App
+
+Access the deployed App here: <br>
+https://ai-statistical-advisor.streamlit.app/
+
 ---
 
 ## 📦 Requirements
