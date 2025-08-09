@@ -22,7 +22,7 @@ with st.sidebar:
     
     st.divider()
     # About
-    st.write("Designed with :heart: by [Gustavo r Santos](https://gustavorsantos.me)")
+    st.write("Designed with :heart: by [Gustavo R. Santos](https://gustavorsantos.me)")
 
 # Title and Instructions
 if not api_key:
