@@ -1,6 +1,18 @@
-from langchain_community.document_loaders import TextLoader
+from langchain_community.document_loaders import TextLoader, PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_openai import OpenAIEmbeddings
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+PROVIDER = os.environ.get("LLM_PROVIDER", 'Ollama')
+OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "llama3")
+
+if PROVIDER == "Ollama":
+    from langchain_ollama.embeddings import OllamaEmbeddings
+    EmbeddingsClass = OllamaEmbeddings
+else:
+    from langchain_openai import OpenAIEmbeddings
+    EmbeddingsClass = OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 import os
 from dotenv import load_dotenv
@@ -17,15 +29,30 @@ def embed_docs():
     needed for the REPL.
     """
     # Load the documentation
-    loader = TextLoader("docs/scipy_stats_docs.md", encoding= 'utf-8')
-    docs = loader.load()
+    docs = []
+    print("Embedding documents...")
+    # Ingest markdown
+    md_path = "docs/scipy_stats_docs.md"
+    if os.path.exists(md_path):
+        print(f"====>Loading {md_path}...")
+        loader = TextLoader(md_path, encoding='utf-8')
+        docs.extend(loader.load())
+    # Ingest PDFs from docs/
+    for fname in os.listdir("docs"):
+        if fname.lower().endswith(".pdf"):
+            pdf_path = os.path.join("docs", fname)
+            pdf_loader = PyPDFLoader(pdf_path)
+            docs.extend(pdf_loader.load())
 
     # Split the documents into smaller chunks
     splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
     split_docs = splitter.split_documents(docs)
 
     # Create embeddings
-    embeddings = OpenAIEmbeddings()
+    if PROVIDER == "Ollama":
+        embeddings = EmbeddingsClass(model=OLLAMA_MODEL)
+    else:
+        embeddings = EmbeddingsClass()
     
     # Save to ChromaDB
     vectordb = Chroma.from_documents(

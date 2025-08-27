@@ -1,0 +1,2 @@
+# Add langchain-ollama for Ollama support
+langchain-ollama>=0.1.0

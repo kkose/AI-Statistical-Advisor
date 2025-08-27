@@ -1,6 +1,22 @@
 from langchain_chroma import Chroma
-from langchain_openai import OpenAIEmbeddings
-from langchain_openai.chat_models import ChatOpenAI
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "llama3")
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", None)
+
+# Always use Ollama embeddings if no OpenAI API key is set
+if not OPENAI_API_KEY:
+    from langchain_community.embeddings import OllamaEmbeddings
+    from langchain_community.llms import Ollama
+    EmbeddingsClass = OllamaEmbeddings
+    ChatModelClass = Ollama
+else:
+    from langchain_openai import OpenAIEmbeddings
+    from langchain_openai.chat_models import ChatOpenAI
+    EmbeddingsClass = OpenAIEmbeddings
+    ChatModelClass = ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
@@ -22,14 +38,20 @@ def get_doc_answer(question: str, k: int = 2) -> str:
         The answer to the question
     """
     # Load vector store
-    vectordb = Chroma(
-        persist_directory="rag/chroma_db",
-        embedding_function=OpenAIEmbeddings()
-    )
-
-    # Create a document retriever
-    retriever = vectordb.as_retriever(search_kwargs={"k": k})
-    llm= ChatOpenAI(model_name="gpt-4o", temperature=0)
+    if not OPENAI_API_KEY:
+        vectordb = Chroma(
+            persist_directory="rag/chroma_db",
+            embedding_function=EmbeddingsClass(model=OLLAMA_MODEL)
+        )
+        retriever = vectordb.as_retriever(search_kwargs={"k": k})
+        llm = ChatModelClass(model=OLLAMA_MODEL)
+    else:
+        vectordb = Chroma(
+            persist_directory="rag/chroma_db",
+            embedding_function=EmbeddingsClass()
+        )
+        retriever = vectordb.as_retriever(search_kwargs={"k": k})
+        llm = ChatModelClass(model_name="gpt-4o", temperature=0)
 
     # Create a system prompt
     system_prompt= (
